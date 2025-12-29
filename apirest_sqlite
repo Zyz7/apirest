@@ -1,0 +1,131 @@
+-- Tabla Addresses
+DROP TABLE IF EXISTS Addresses;
+CREATE TABLE Addresses (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  street TEXT NOT NULL,
+  num TEXT NOT NULL,
+  colony TEXT NOT NULL,
+  postalcode INTEGER NOT NULL,
+  state TEXT NOT NULL,
+  country TEXT NOT NULL
+);
+
+INSERT INTO Addresses (id, street, num, colony, postalcode, state, country) VALUES
+(1,'street01','01','colony01',71000,'state01','country01'),
+(2,'street02','02','colony02',72000,'state02','country02'),
+(3,'street03','03','colony03',73000,'state03','country03');
+
+-- Tabla Categories
+DROP TABLE IF EXISTS Categories;
+CREATE TABLE Categories (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL
+);
+
+INSERT INTO Categories (id, name) VALUES
+(1,'Computer'),
+(2,'Cellphone'),
+(3,'Laptop');
+
+-- Tabla Logs
+DROP TABLE IF EXISTS Logs;
+CREATE TABLE Logs (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  action TEXT NOT NULL,
+  tabla TEXT NOT NULL,
+  description TEXT NOT NULL,
+  timeDate DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO Logs (id, action, tabla, description, timeDate) VALUES
+(1,'insert','users','New line inserted with id: 2','2025-12-29 10:47:26'),
+(2,'update','users','Line modified with id: 2','2025-12-29 11:00:02'),
+(3,'insert','users','New line inserted with id: 4','2025-12-29 11:42:58'),
+(4,'insert','users','New line inserted with id: 5','2025-12-29 11:43:21'),
+(5,'insert','users','New line inserted with id: 6','2025-12-29 11:43:38'),
+(6,'update','users','Line modified with id: 2','2025-12-29 14:56:25'),
+(7,'update','users','Line modified with id: 4','2025-12-29 14:57:02'),
+(8,'update','users','Line modified with id: 5','2025-12-29 14:57:38'),
+(9,'update','users','Line modified with id: 6','2025-12-29 15:00:02'),
+(10,'update','users','Line modified with id: 6','2025-12-29 15:00:39');
+
+-- Tabla Products
+DROP TABLE IF EXISTS Products;
+CREATE TABLE Products (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  description TEXT,
+  amount INTEGER NOT NULL,
+  price REAL NOT NULL,
+  categoryId INTEGER,
+  FOREIGN KEY (categoryId) REFERENCES Categories(id)
+);
+
+INSERT INTO Products (id, name, description, amount, price, categoryId) VALUES
+(1,'product01','description01',10,10.10,3),
+(3,'product03','description03',30,30.30,2),
+(4,'product04','description04',40,40.40,1);
+
+-- Tabla Suppliers
+DROP TABLE IF EXISTS Suppliers;
+CREATE TABLE Suppliers (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL UNIQUE,
+  telephone TEXT NOT NULL UNIQUE,
+  addressId INTEGER,
+  FOREIGN KEY (addressId) REFERENCES Addresses(id)
+);
+
+INSERT INTO Suppliers (id, name, email, telephone, addressId) VALUES
+(1,'supplier01','supplier01@example.com','111-111-1111',3),
+(2,'supplier02','supplier02@example.com','222-222-2222',1),
+(3,'supplier03','supplier03@example.com','333-333-3333',2);
+
+-- Tabla Users
+DROP TABLE IF EXISTS Users;
+CREATE TABLE Users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  firstname TEXT NOT NULL,
+  lastname TEXT,
+  email TEXT NOT NULL UNIQUE,
+  password TEXT NOT NULL,
+  addressId INTEGER,
+  active CHAR(1) DEFAULT 'Y',
+  FOREIGN KEY (addressId) REFERENCES Addresses(id)
+);
+
+INSERT INTO Users (id, name, firstname, lastname, email, password, addressId, active) VALUES
+(2,'prueba01','first01','last01','prueba01@example.com','prueba01!',3,'Y'),
+(4,'prueba02','first02','last02','prueba02@example.com','prueba02!',1,'Y'),
+(5,'prueba03','first03','last03','prueba03@example.com','prueba03!',2,'Y'),
+(6,'prueba04','first04','last04','prueba04@example.com','prueba06!',NULL,'N');
+
+-- Trigger para INSERT
+CREATE TRIGGER insert_users
+AFTER INSERT ON Users
+FOR EACH ROW
+BEGIN
+    INSERT INTO Logs (action, tabla, description)
+    VALUES ('insert', 'users', 'New line inserted with id: ' || NEW.id);
+END;
+
+-- Trigger para UPDATE
+CREATE TRIGGER update_users
+AFTER UPDATE ON Users
+FOR EACH ROW
+BEGIN
+    INSERT INTO Logs (action, tabla, description)
+    VALUES ('update', 'users', 'Line modified with id: ' || OLD.id);
+END;
+
+-- Trigger para DELETE
+CREATE TRIGGER delete_suppliers
+AFTER DELETE ON Suppliers
+FOR EACH ROW
+BEGIN
+    INSERT INTO Logs (action, tabla, description)
+    VALUES ('delete', 'suppliers', 'Line removed with id: ' || OLD.id);
+END;
+
