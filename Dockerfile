@@ -5,7 +5,7 @@ COPY . .
 RUN dotnet publish -c Release -o out
 
 # Etapa 2: Runtime
-FROM mcr.microsoft.com/dotnet/aspnet:9.0
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build /app/out .
 CMD ["dotnet", "ApiRest.dll"]
