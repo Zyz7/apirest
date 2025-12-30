@@ -3,6 +3,7 @@ services:
     name: ApiRest
     env: docker
     plan: free
+    dockerfilePath: ./Dockerfile
     disk:
       name: data
       mountPath: /data
