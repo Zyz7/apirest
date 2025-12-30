@@ -64,13 +64,5 @@ namespace ApiRest.controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        //http://localhost:5054/api/login/helloworld
-        public async Task<IActionResult> HelloWorld()
-        {
-            return Ok("Hello World!");
-        }
-
     }
 }

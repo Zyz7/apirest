@@ -19,6 +19,7 @@ builder.Services.AddDbContext<Context>(options =>
     )
 );
 */
+
 builder.Services.AddDbContext<Context>(options =>
     options.UseSqlite(
         "Data Source=/data/apirest.db"
@@ -118,6 +119,13 @@ builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<Context>();
+    db.Database.EnsureCreated(); // crea la base si no existe
+    // o db.Database.Migrate(); si usas migraciones
+}
 
 //if (app.Environment.IsDevelopment() )
 //{
