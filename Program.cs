@@ -115,15 +115,15 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment() )
+//{
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiRest C#");
         options.RoutePrefix = string.Empty; //swagger in the root
     });
-}
+//}
 
 app.UseCors("AllowEverything");
 app.UseAuthentication();
