@@ -6,6 +6,7 @@ cd ApiEjemploMySQL
 dotnet add package Pomelo.EntityFrameworkCore.MySql
 dotnet add package Microsoft.EntityFrameworkCore.Tools
 dotnet add package Swashbuckle.AspNetCore --version 6.6.2
+dotnet add package Microsoft.Data.Sqlite
 dotnet add package Microsoft.EntityFrameworkCore.Sqlite --version 9.*
 dotnet add package Microsoft.EntityFrameworkCore.Design --version 9.*
 dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer --version 9.0.0
