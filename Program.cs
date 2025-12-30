@@ -109,6 +109,10 @@ builder.Services.AddSwaggerGen(options =>
 
 });
 
+// Port
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5054";
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+
 // Controllers
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
