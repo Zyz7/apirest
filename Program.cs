@@ -20,9 +20,16 @@ builder.Services.AddDbContext<Context>(options =>
 );
 */
 
+var dbPath = "/data/apirest.db"; 
+var dir = Path.GetDirectoryName(dbPath); 
+if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
+{ 
+    Directory.CreateDirectory(dir); 
+}
+
 builder.Services.AddDbContext<Context>(options =>
     options.UseSqlite(
-        "Data Source=/data/apirest.db"
+        builder.Configuration.GetConnectionString("DBConnection")
     )
 );
 
