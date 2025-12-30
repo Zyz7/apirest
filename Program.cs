@@ -21,7 +21,7 @@ builder.Services.AddDbContext<Context>(options =>
 */
 builder.Services.AddDbContext<Context>(options =>
     options.UseSqlite(
-        "Data Source=data/apirest.db"
+        "Data Source=/data/apirest.db"
     )
 );
 
